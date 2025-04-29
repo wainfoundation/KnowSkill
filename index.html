@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="KnowSkill: Master skills, earn Pi rewards, and connect with a global decentralized learning community powered by Pi Network.">
+    <meta name="keywords" content="KnowSkill, decentralized learning, Pi Network, online courses, earn Pi, web development, data science, digital marketing">
+    <meta name="author" content="KnowSkill Team">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4f46e5">
+    <meta property="og:title" content="KnowSkill - Master Skills, Earn Pi">
+    <meta property="og:description" content="Join KnowSkill to master skills, earn Pi rewards, and connect with a global community via Pi Network.">
+    <meta property="og:image" content="/icon-192.png">
+    <meta property="og:url" content="https://knowskill.app/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <title>KnowSkill - Decentralized Learning Platform</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>Pi.init({ version: "2.0", sandbox: true })</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.12.16/dist/framer-motion.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --primary: #4f46e5; /* Vibrant Indigo */
+            --secondary: #f3f4f6; /* Light Gray */
+            --accent: #1f2937; /* Dark Gray */
+            --text: #1f2937; /* Dark Gray */
+            --background: #f3f4f6; /* Light Gray */
+            --card-bg: rgba(243, 244, 246, 0.95); /* Light Gray with opacity */
+            --glass-bg: rgba(243, 244, 246, 0.2); /* Light Gray glass effect */
+            --glass-border: rgba(243, 244, 246, 0.3); /* Light Gray glass border */
+            --shadow: 0 8px 24px rgba(31, 41, 55, 0.1); /* Accent-based shadow */
+            --error: #ef4444; /* Red for errors */
+            --gradient: linear-gradient(135deg, #4f46e5, #1f2937); /* Indigo to Dark Gray */
+            --dark-bg: #1f2937; /* Dark Gray */
+            --dark-text: #f3f4f6; /* Light Gray */
+            --dark-card: rgba(31, 41, 55, 0.9); /* Dark Gray with opacity */
+            --dark-glass-bg: rgba(31, 41, 55, 0.9); /* Dark Gray glass effect */
+            --dark-glass-border: rgba(243, 244, 246, 0.15); /* Light Gray for dark mode */
+        }
+        [data-theme="dark"] {
+            --background: var(--dark-bg);
+            --text: var(--dark-text);
+            --card-bg: var(--dark-card);
+            --glass-bg: var(--dark-glass-bg);
+            --glass-border: var(--dark-glass-border);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        a:focus, button:focus, input:focus {
+            outline: 3px solid var(--primary);
+            outline-offset: 3px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *:before, *:after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+        @media (forced-colors: active) {
+            .card, .app-bar, .section, footer {
+                border: 1px solid CanvasText;
+            }
+            .btn, .pi-signin {
+                border: 1px solid ButtonText;
+            }
+        }
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            z-index: 1002;
+            transition: top 0.3s ease;
+        }
+        .skip-link:focus {
+            top: 1rem;
+        }
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .preloader-spinner {
+            width: 56px;
+            height: 56px;
+            border: 5px solid var(--primary);
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .app-bar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.25rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .app-bar .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        .logo-icon {
+            margin-right: 12px;
+            color: var(--primary);
+            transition: transform 0.4s ease;
+        }
+        .app-bar .logo:hover .logo-icon {
+            transform: rotate(360deg);
+        }
+        .app-bar .pi-signin {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .app-bar .pi-signin:hover,
+        .app-bar .pi-signin:focus {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .nav-menu a:hover,
+        .nav-menu a:focus {
+            color: var(--primary);
+        }
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.2);
+        }
+        .hero-bg {
+            background: var(--gradient);
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(79, 70, 229, 0.4) 0%, transparent 70%);
+            z-index: 0;
+        }
+        .hero-bg .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-bg h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero-bg p {
+            font-size: 1.25rem;
+            color: var(--dark-text);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--dark-text);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1.25rem 3rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 1.25rem 3rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .sticky-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .progress-bar {
+            background: rgba(31, 41, 55, 0.1); /* Accent-based */
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            background: var(--primary);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .progress-fill::after {
+            content: '50%';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            animation: revealCard 0.7s ease-out forwards;
+        }
+        @keyframes revealCard {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        .section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 1.75rem;
+        }
+        .section p.subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: var(--text);
+            opacity: 0.85;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 40px rgba(31, 41, 55, 0.2);
+        }
+        .featured-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .error-message {
+            background: var(--error);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            margin: 1.5rem auto;
+            font-size: 1rem;
+            max-width: 90%;
+        }
+        .social-proof {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        footer {
+            background: var(--dark-bg);
+            padding: 5rem 2rem;
+            color: var(--dark-text);
+            position: relative;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+        .footer-grid h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--dark-text);
+        }
+        .footer-grid a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        .footer-grid a:hover {
+            color: var(--primary);
+        }
+        .social-icons a {
+            margin: 0 1rem;
+            color: var(--dark-text);
+            font-size: 1.75rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            transform: scale(1.4);
+            color: var(--primary);
+        }
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 3rem auto;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 9999px 0 0 9999px;
+            font-size: 1rem;
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        .newsletter-form button {
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 9999px 9999px 0;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+        .newsletter-form button:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+        .refer-cta {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .refer-cta:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            display: none;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .back-to-top.show {
+            display: block;
+        }
+        .back-to-top:hover {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            z-index: 999;
+        }
+        .filter-btn {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: transparent;
+        }
+        /* Section-specific styles */
+        .courses-section {
+            background: var(--secondary);
+        }
+        .features-section {
+            background: var(--secondary);
+        }
+        .features-section .icon-bg {
+            background: rgba(79, 70, 229, 0.2); /* Primary-based */
+        }
+        .features-section .icon {
+            color: var(--primary);
+        }
+        .features-section h3 {
+            color: var(--text);
+        }
+        .features-section p {
+            color: var(--text);
+        }
+        .features-section a {
+            color: var(--primary);
+        }
+        .testimonial-section {
+            background: var(--secondary);
+        }
+        .testimonial-section .avatar-bg {
+            background: rgba(79, 70, 229, 0.2); /* Primary-based */
+        }
+        .testimonial-section p {
+            color: var(--text);
+        }
+        .testimonial-section .name {
+            color: var(--text);
+        }
+        .cta-section {
+            background: var(--primary);
+        }
+        .cta-section h2 {
+            color: white;
+        }
+        .cta-section p {
+            color: var(--secondary);
+        }
+        .course-modal {
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .course-modal img {
+            background: var(--secondary);
+        }
+        .course-modal button {
+            background: var(--primary);
+            color: white;
+        }
+        .course-modal button:hover {
+            background: var(--accent);
+        }
+        [data-theme="dark"] .course-modal {
+            background: var(--dark-card);
+            color: var(--dark-text);
+        }
+        @media (max-width: 1024px) {
+            .hero-bg h1 {
+                font-size: 2.75rem;
+            }
+            .hero-bg p {
+                font-size: 1.1rem;
+            }
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 85%;
+                max-width: 320px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 2.5rem;
+                box-shadow: var(--shadow);
+                animation: slideIn 0.3s ease;
+                z-index: 999;
+            }
+            @keyframes slideIn {
+                from { transform: translateX(100%); }
+                to { transform: translateX(0); }
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-bg {
+                min-height: -webkit-fill-available;
+                padding: 3rem 1.5rem;
+            }
+            .hero-bg h1 {
+                font-size: 2.25rem;
+            }
+            .section {
+                padding: 4rem 1.5rem;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 1rem 2.5rem;
+                font-size: 1.1rem;
+            }
+            .filter-bar {
+                top: 60px;
+                padding: 1rem;
+            }
+            .swiper-slide {
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .app-bar .logo {
+                font-size: 1.75rem;
+            }
+            .section h2 {
+                font-size: 2.25rem;
+            }
+            .card {
+                padding: 2rem;
+            }
+            .sticky-cta {
+                bottom: 20px;
+                right: 20px;
+            }
+            .back-to-top {
+                bottom: 90px;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+    <!-- Header -->
+    <header class="app-bar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap logo-icon"></i> KnowSkill
+        </div>
+        <nav class="nav-menu">
+            <a href="#courses">Courses</a>
+            <a href="#community">Community</a>
+            <a href="#about">About</a>
+            <a href="#pi-signin" class="pi-signin"><i class="fas fa-wallet"></i> Connect Pi Wallet</a>
+            <button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        </nav>
+        <button class="hamburger" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    </header>
+    <!-- Error Message -->
+    <div id="error-message" class="error-message"></div>
+    <!-- Main Content -->
+    <main class="flex-1" id="main-content">
+        <!-- Sticky CTA -->
+        <a href="#signup" class="sticky-cta btn-primary text-white font-semibold py-3 px-6 rounded-full fade-in">
+            <i class="fas fa-rocket mr-2"></i> Get Started
+        </a>
+        <!-- Back to Top -->
+        <button class="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+        <!-- Hero Section -->
+        <section class="hero-bg relative overflow-hidden">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-background-of-colored-lines-11376-large.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 z-0" id="particles-js"></div>
+            <div class="hero-content container mx-auto px-4 py-24 md:py-32">
+                <h1 class="text-4xl md:text-7xl font-extrabold mb-6 fade-in">
+                    Learn, Earn, Thrive with Pi
+                </h1>
+                <p class="text-lg md:text-2xl mb-8 max-w-4xl mx-auto fade-in">
+                    Join KnowSkill’s decentralized platform to master in-demand skills, earn Pi rewards, and connect with a vibrant global community of 15,000+ learners.
+                </p>
+                <div class="hero-cta fade-in">
+                    <button onclick="connectPiWallet()" class="btn-primary text-white font-semibold animate-pulse">
+                        <i class="fas fa-wallet mr-2"></i> Start Earning Pi
+                    </button>
+                    <a href="#courses" class="btn-secondary font-semibold">
+                        Discover Courses
+                    </a>
+                </div>
+                <div class="hero-stats fade-in">
+                    <div class="hero-stat">
+                        <i class="fas fa-users text-primary"></i> 15,000+ Learners
+                    </div>
+                    <div class="hero-stat">
+                        <i class="fas fa-coins text-primary"></i> 1 Pi per Module
+                    </div>
+                    <div class="hero-stat">
+                        <i class="fas fa-certificate text-primary"></i> NFT Certificates
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Social Proof -->
+        <div class="social-proof py-10">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide text-center text-white">
+                        <p class="text-2xl font-semibold">Trusted by <span class="count-up" data-target="15000">0</span>+ learners</p>
+                    </div>
+                    <div class="swiper-slide text-center text-white">
+                        <p class="text-2xl font-semibold">Featured in <a href="#" class="underline">CryptoNews</a>, <a href="#" class="underline">Pi Blog</a></p>
+                    </div>
+                    <div class="swiper-slide text-center text-white">
+                        <p class="text-2xl font-semibold">Earn up to 1 Pi per module completed!</p>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <!-- Course Preview Section -->
+        <section id="courses" class="courses-section py-24 section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 fade-in">
+                    Unlock World-Class Courses
+                </h2>
+                <p class="subtitle fade-in">Master skills from top instructors and earn Pi with every milestone.</p>
+                <div class="filter-bar fade-in">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="web">Web Development</button>
+                    <button class="filter-btn" data-category="data">Data Science</button>
+                    <button class="filter-btn" data-category="marketing">Digital Marketing</button>
+                    <input type="text" id="course-search" placeholder="Search courses..." class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div id="courses-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"></div>
+                <a href="#courses" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg mt-12 fade-in">
+                    Explore All Courses
+                </a>
+            </div>
+        </section>
+        <!-- Features Section -->
+        <section class="features-section py-24 section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 fade-in">
+                    Your Path to Success
+                </h2>
+                <p class="subtitle fade-in">Learn, earn, and grow with KnowSkill’s cutting-edge features.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="card text-center reveal">
+                        <div class="icon-bg w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6">
+                            <i class="fas fa-coins icon text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">Earn Pi Rewards</h3>
+                        <p>Unlock 0.5–1 Pi per module, instantly credited to your Pi wallet.</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="icon-bg w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6">
+                            <i class="fas fa-chart-line icon text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">Track Your Progress</h3>
+                        <p>Stay motivated with real-time progress bars and milestones.</p>
+                        <div class="mt-6 w-3/4 mx-auto">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 50%;"></div>
+                            </div>
+                            <p class="text-sm mt-3">Module 1: 50% Complete</p>
+                        </div>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="icon-bg w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6">
+                            <i class="fas fa-users icon text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">Vibrant Community</h3>
+                        <p>Join discussions, share insights, and grow together.</p>
+                        <a href="#community" class="mt-4 inline-block font-semibold">Join Now</a>
+                    </div>
+                </div>
+            </section>
+            <!-- Testimonial Section -->
+            <section class="testimonial-section py-24 section">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-12 fade-in">
+                        Stories from Our Learners
+                    </h2>
+                    <p class="subtitle fade-in">See how KnowSkill is empowering lives with skills and Pi rewards.</p>
+                    <div class="swiper-container testimonial-carousel max-w-6xl mx-auto">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="card reveal text-center">
+                                    <div class="avatar-bg w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <span class="font-semibold text-2xl">SK</span>
+                                    </div>
+                                    <p class="italic mb-4">"KnowSkill transformed my career with web development skills and Pi rewards!"</p>
+                                    <p class="name font-semibold">— Sarah K., Web Developer</p>
+                                    <div class="flex justify-center gap-1 mt-4">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card reveal text-center">
+                                    <div class="avatar-bg w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <span class="font-semibold text-2xl">JM</span>
+                                    </div>
+                                    <p class="italic mb-4">"The progress tracker and Pi earnings keep me motivated!"</p>
+                                    <p class="name font-semibold">— John M., Data Scientist</p>
+                                    <div class="flex justify-center gap-1 mt-4">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star-half-alt text-yellow-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card reveal text-center">
+                                    <div class="avatar-bg w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <span class="font-semibold text-2xl">AL</span>
+                                    </div>
+                                    <p class="italic mb-4">"The community forums helped me connect and grow!"</p>
+                                    <p class="name font-semibold">— Anna L., Marketing Expert</p>
+                                    <div class="flex justify-center gap-1 mt-4">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <p class="text-center mt-12 fade-in text-xl">
+                        Join <span class="count-up" data-target="15000">0</span>+ learners thriving with KnowSkill!
+                    </p>
+                </div>
+            </section>
+            <!-- CTA Section -->
+            <section id="signup" class="cta-section py-24 section">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 fade-in">
+                        Launch Your Learning Journey
+                    </h2>
+                    <p class="text-lg mb-8 max-w-3xl mx-auto fade-in">
+                        Master skills, earn Pi, and join a global community on KnowSkill’s decentralized platform.
+                    </p>
+                    <button onclick="connectPiWallet()" class="btn-primary text-white font-semibold py-4 px-8 rounded-lg fade-in animate-pulse">
+                        <i class="fas fa-wallet mr-2"></i> Connect Wallet & Start
+                    </button>
+                    <div class="mt-12 flex justify-center gap-8 fade-in">
+                        <img src="https://via.placeholder.com/48" alt="Pi Network Certified" class="h-12">
+                        <img src="https://via.placeholder.com/48" alt="Secure Platform" class="h-12">
+                        <img src="https://via.placeholder.com/48" alt="Trusted by 15K+" class="h-12">
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer -->
+        <footer class="relative">
+            <div class="container mx-auto px-4">
+                <div class="footer-grid">
+                    <div>
+                        <h3>About KnowSkill</h3>
+                        <a href="#mission">Our Mission</a>
+                        <a href="#team">Our Team</a>
+                        <a href="#careers">Careers</a>
+                        <a href="#blog">Blog</a>
+                    </div>
+                    <div>
+                        <h3>Support</h3>
+                        <a href="#contact">Contact Us</a>
+                        <a href="#faq">FAQ</a>
+                        <a href="#help">Help Center</a>
+                        <a href="#support-forum">Support Forum</a>
+                    </div>
+                    <div>
+                        <h3>Legal</h3>
+                        <a href="#terms">Terms of Service</a>
+                        <a href="#privacy">Privacy Policy</a>
+                        <a href="#cookies">Cookie Policy</a>
+                        <a href="#compliance">Compliance</a>
+                    </div>
+                    <div>
+                        <h3>Community</h3>
+                        <a href="#forum">Discussion Forum</a>
+                        <a href="#events">Web3 Events</a>
+                        <a href="#leaderboards">Leaderboards</a>
+                        <a href="#refer">Refer & Earn Pi</a>
+                    </div>
+                </div>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Join our newsletter for updates" aria-label="Email for newsletter">
+                    <button type="submit">Subscribe</button>
+                </div>
+                <div class="social-icons text-center mb-8">
+                    <a href="#" aria-label="X"><i class="fab fa-x"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="text-center mb-8">
+                    <a href="#refer" class="refer-cta">Invite Friends, Earn Pi Rewards</a>
+                </div>
+                <p class="text-center">© <span id="current-year"></span> KnowSkill. All rights reserved.</p>
+            </div>
+        </footer>
+        <script>
+            let userId = null;
+
+            // Mock Course Data
+            const mockCourses = [
+                {
+                    _id: '1',
+                    title: 'Web Development Bootcamp',
+                    description: 'Master HTML, CSS, JavaScript, and React to build modern websites.',
+                    price: 5,
+                    image: 'https://via.placeholder.com/300x150?text=Web+Development',
+                    category: 'web',
+                    featured: true
+                },
+                {
+                    _id: '2',
+                    title: 'Data Science with Python',
+                    description: 'Learn Python, Pandas, and data visualization for real-world insights.',
+                    price: 7,
+                    image: 'https://via.placeholder.com/300x150?text=Data+Science',
+                    category: 'data'
+                },
+                {
+                    _id: '3',
+                    title: 'Digital Marketing Mastery',
+                    description: 'Boost your brand with SEO, social media, and paid ads.',
+                    price: 4,
+                    image: 'https://via.placeholder.com/300x150?text=Digital+Marketing',
+                    category: 'marketing'
+                },
+                {
+                    _id: '4',
+                    title: 'Advanced JavaScript',
+                    description: 'Dive deep into ES6, async programming, and APIs.',
+                    price: 6,
+                    image: 'https://via.placeholder.com/300x150?text=JavaScript',
+                    category: 'web'
+                }
+            ];
+
+            document.addEventListener('DOMContentLoaded', () => {
+                hidePreloader();
+                checkOnlineStatus();
+                displayCourses();
+                setupHamburgerMenu();
+                revealCards();
+                authenticateUser();
+                promptNotifications();
+                registerServiceWorker();
+                initializeSwiper();
+                setupBackToTop();
+                updateCopyrightYear();
+                setupCourseFilters();
+                setupCourseSearch();
+                setupThemeToggle();
+                setupSmoothScroll();
+            });
+
+            // Preloader
+            function hidePreloader() {
+                setTimeout(() => {
+                    document.querySelector('.preloader').classList.add('hidden');
+                }, 1000);
+            }
+
+            // Hamburger Menu
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            function setupHamburgerMenu() {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    hamburger.innerHTML = navMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                    hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+                });
+            }
+
+            // Error Handling
+            function showError(message) {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => errorDiv.style.display = 'none', 4000);
+            }
+
+            // Online Status
+            function checkOnlineStatus() {
+                if (!navigator.onLine) {
+                    showError('You are offline. Some features may be unavailable.');
+                }
+            }
+            window.addEventListener('online', checkOnlineStatus);
+            window.addEventListener('offline', checkOnlineStatus);
+
+            // Pi Network Authentication
+            const scopes = ['payments', 'username'];
+            function onIncompletePaymentFound(payment) {
+                console.log('Incomplete payment found:', payment);
+            }
+            async function authenticateUser() {
+                try {
+                    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+                    userId = auth.user.uid;
+                    showError(`Welcome, ${auth.user.username}!`);
+                    document.querySelectorAll('.pi-signin').forEach(btn => {
+                        btn.innerHTML = `<img src="https://via.placeholder.com/24" alt="User Avatar" class="w-6 h-6 rounded-full mr-2"> ${auth.user.username}`;
+                        btn.disabled = true;
+                        btn.classList.add('bg-accent', 'cursor-not-allowed');
+                    });
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    showError('Please sign in with Pi to access all features.');
+                }
+            }
+
+            // Connect Pi Wallet
+            async function connectPiWallet() {
+                if (!userId) {
+                    await authenticateUser();
+                } else {
+                    showError('Wallet already connected!');
+                }
+            }
+
+            // Display Courses
+            function displayCourses(courses = mockCourses) {
+                const container = document.getElementById('courses-container');
+                container.innerHTML = courses.map(course => `
+                    <div class="card reveal relative">
+                        ${course.featured ? '<span class="featured-badge">Featured</span>' : ''}
+                        <img src="${course.image}" alt="${course.title} Course" class="w-full h-48 object-cover rounded-lg mb-6" loading="lazy">
+                        <h3 class="text-2xl font-semibold mb-3">${course.title}</h3>
+                        <p class="mb-4">${course.description}</p>
+                        <p class="font-semibold mb-6">Price: ${course.price} Pi</p>
+                        <button onclick="openCourseModal('${course._id}')" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg w-full">
+                            Enroll Now
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Course Filters
+            function setupCourseFilters() {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                filterButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const category = btn.getAttribute('data-category');
+                        const filteredCourses = category === 'all' ? mockCourses : mockCourses.filter(course => course.category === category);
+                        displayCourses(filteredCourses);
+                    });
+                });
+            }
+
+            // Course Search
+            function setupCourseSearch() {
+                const searchInput = document.getElementById('course-search');
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value.toLowerCase();
+                    const filteredCourses = mockCourses.filter(course =>
+                        course.title.toLowerCase().includes(query) ||
+                        course.description.toLowerCase().includes(query)
+                    );
+                    displayCourses(filteredCourses);
+                });
+            }
+
+            // Course Modal
+            function openCourseModal(courseId) {
+                const course = mockCourses.find(c => c._id === courseId);
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="course-modal p-8 rounded-2xl max-w-lg w-full relative">
+                        <button onclick="this.parentElement.parentElement.remove()" class="absolute top-4 right-4 text-xl" aria-label="Close modal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h2 class="text-3xl font-bold mb-6">${course.title}</h2>
+                        <img src="${course.image}" alt="${course.title}" class="w-full h-40 object-cover rounded-lg mb-6">
+                        <p class="mb-6">${course.description}</p>
+                        <p class="font-semibold mb-6">Price: ${course.price} Pi</p>
+                        <button onclick="enrollCourse('${course._id}')" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg w-full">
+                            Confirm Enrollment
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            // Enroll in Course (Mock)
+            function enrollCourse(courseId) {
+                if (!userId) {
+                    showError('Please connect your Pi Wallet first.');
+                    return;
+                }
+                showError(`Enrolled in course ${courseId}!`);
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                }
+            }
+
+            // Card Animation
+            function revealCards() {
+                const cards = document.querySelectorAll('.card');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('reveal');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                cards.forEach(card => observer.observe(card));
+            }
+
+            // Swiper Carousel
+            function initializeSwiper() {
+                new Swiper('.swiper-container', {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    loop: true,
+                    autoplay: { delay: 4000, disableOnInteraction: false },
+                    pagination: { el: '.swiper-pagination', clickable: true }
+                });
+                new Swiper('.testimonial-carousel', {
+                    slidesPerView: 1,
+                    spaceBetween: 24,
+                    loop: true,
+                    autoplay: { delay: 5000, disableOnInteraction: false },
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    breakpoints: {
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 }
+                    }
+                });
+            }
+
+            // Number Counter
+            document.querySelectorAll('.count-up').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const increment = target / 100;
+                const updateCounter = () => {
+                    count += increment;
+                    if (count < target) {
+                        counter.textContent = Math.ceil(count);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                };
+                const observer = new IntersectionObserver(entries => {
+                    if (entries[0].isIntersecting) {
+                        updateCounter();
+                        observer.disconnect();
+                    }
+                }, { threshold: 0.5 });
+                observer.observe(counter);
+            });
+
+            // Notifications
+            function promptNotifications() {
+                if ('Notification' in window && Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('Welcome to KnowSkill!', {
+                                body: 'Master skills, earn Pi, and join our global community.',
+                                icon: '/icon-192.png'
+                            });
+                        }
+                    });
+                }
+            }
+            setTimeout(promptNotifications, 5000);
+
+            // Service Worker Registration
+            function registerServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/service-worker.js').catch(err => {
+                        console.error('Service Worker registration failed:', err);
+                        showError('Offline support unavailable.');
+                    });
+                }
+            }
+
+            // Back to Top
+            function setupBackToTop() {
+                const backToTop = document.querySelector('.back-to-top');
+                window.addEventListener('scroll', () => {
+                    backToTop.classList.toggle('show', window.scrollY > 400);
+                });
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Update Copyright Year
+            function updateCopyrightYear() {
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            // Dark Mode Toggle
+            function setupThemeToggle() {
+                const toggle = document.querySelector('.theme-toggle');
+                const html = document.documentElement;
+                toggle.addEventListener('click', () => {
+                    const isDark = html.getAttribute('data-theme') === 'dark';
+                    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                    toggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+                });
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                html.setAttribute('data-theme', savedTheme);
+                toggle.innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+
+            // Smooth Scroll for Anchor Links
+            function setupSmoothScroll() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', e => {
+                        e.preventDefault();
+                        const targetId = anchor.getAttribute('href').substring(1);
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            }
+        </script>
+        <!-- Particles.js -->
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 120, density: { enable: true, value_area: 800 } },
+                    color: { value: '#ffffff' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.7, random: true },
+                    size: { value: 5, random: true },
+                    line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.5, width: 1 },
+                    move: { enable: true, speed: 3, direction: 'none', random: true }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                    modes: { repulse: { distance: 150 }, push: { particles_nb: 4 } }
+                },
+                retina_detect: true
+            });
+        </script>
+        <!-- Confetti -->
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    </body>
+</html>
