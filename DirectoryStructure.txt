@@ -1,0 +1,24 @@
+knowskill/
+├── public/
+│   ├── index.html
+│   ├── courses.html
+│   ├── forum.html
+│   ├── service-worker.js
+│   ├── manifest.json
+│   ├── favicon.ico
+│   ├── icon-192.png
+│   └── assets/
+│       └── placeholder.jpg
+├── src/
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Course.js
+│   │   └── Progress.js
+│   ├── routes/
+│   │   └── api.js
+│   ├── utils/
+│   │   └── logger.js
+│   ├── server.js
+│   └── initData.js
+├── package.json
+└── .env
